@@ -45,6 +45,7 @@ dependencies:
   date_picker_timeline:
   numberpicker:
   carousel_slider:
+  awesome_notifications:
 
 dev_dependencies:
   flutter_test:

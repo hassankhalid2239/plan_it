@@ -323,37 +323,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   }
 
-  void submitData() async {
-    if (titleTextController.text.isNotEmpty ) {
-      //add task
-      // await _addTaskToDb();
-      // _taskController.getTasks();
-      Get.back();
-    } else if (titleTextController.text.isEmpty) {
-      Get.snackbar(
-        'Required',
-        'All fields are required !',
-        backgroundColor: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-        icon: const Icon(
-          Icons.warning_amber_rounded,
-          color: Colors.red,
-        ),
-        colorText: Colors.pinkAccent,
-      );
-    }
-  }
 
-// _addTaskToDb() async {
-//   await _taskController.addTask(
-//       task: TaskModel(
-//           title: titleTextController.text,
-//           description: descriptionTextController.text,
-//           date: date,
-//           dueDate: dueDateTextController.text,
-//           isCompleted: isCompleted.toString()));
-//   // print("My id is "+"$value");
-// }
 }
 
 

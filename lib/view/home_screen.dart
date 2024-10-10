@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:plan_it/view/update_task_screen.dart';
 import '../Controllers/task_controller.dart';
+import '../Services/notification_services.dart';
 import 'add_task_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,10 +31,18 @@ class _HomeScreenState extends State<HomeScreen> {
         forceMaterialTransparency: true,
         // backgroundColor: Color(0xffd9daf3),
         centerTitle: true,
-        title: Text(
-          DateFormat.yMMMd().format(_taskController.selectedDate.value)==DateFormat.yMMMd().format(DateTime.now())?
-          'Today': DateFormat.yMMMd().format(_taskController.selectedDate.value),
-          style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w600),
+        title: InkWell(
+          onTap: () async {
+            await NotificationService.showNotification(
+              title: "Title of the notification",
+              body: "Body of the notification",
+            );
+          },
+          child: Text(
+            DateFormat.yMMMd().format(_taskController.selectedDate.value)==DateFormat.yMMMd().format(DateTime.now())?
+            'Today': DateFormat.yMMMd().format(_taskController.selectedDate.value),
+            style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w600),
+          ),
         ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(100),
@@ -176,14 +185,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                             'true');
                                       }
                                     },
-                                    child:  Icon(
-                                      _taskController.taskList[index].isCompleted=='true'?
-                                      Icons.check_circle:
-                                      Icons.check_circle_outline,
+                                    child:  Obx((){
+                                      return Icon(
+                                        _taskController.taskList[index].isCompleted=='true'?
+                                        Icons.check_circle:
+                                        Icons.check_circle_outline,
 
-                                      color: Colors.white,
-                                      size: 30,
-                                    )
+                                        color: Colors.white,
+                                        size: 30,
+                                      );
+                                    })
                                 )
                               // trailing:index%2==0? Icon(Icons.check_circle_outline,color: Color(0xffB3B7EE),) : Icon(Icons.check_circle,color: Color(0xffB3B7EE),)
                             ),
