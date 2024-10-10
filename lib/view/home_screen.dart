@@ -23,8 +23,16 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _taskController.getTasks();
   }
+
+  void getTime(){
+    String dateTime= DateTime.now().toString();
+    print(dateTime);
+    DateTime dt= DateTime.parse(dateTime);
+    print(dt);
+  }
   @override
   Widget build(BuildContext context) {
+    getTime();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -89,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
               // itemCount: 10,
               itemBuilder: (context, index) {
                 List<String> days = _taskController.taskList[index].reminderDays!.split(',');
-                if(_taskController.taskList[index].dueDate==DateFormat('E, d MMM yyyy').format(_taskController.selectedDate.value)|| days.contains(DateFormat('E').format(_taskController.selectedDate.value))){
+                if(_taskController.taskList[index].uiDueDate==DateFormat('E, d MMM yyyy').format(_taskController.selectedDate.value)|| days.contains(DateFormat('E').format(_taskController.selectedDate.value))){
                   return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5),
                       child:  Dismissible(
@@ -131,8 +139,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 subtitle:Text(
-                                  _taskController.taskList[index].dueDate!.isNotEmpty?
-                                  _taskController.taskList[index].dueDate!:
+                                  _taskController.taskList[index].uiDueDate!.isNotEmpty?
+                                  _taskController.taskList[index].uiDueDate!:
                                   _taskController.taskList[index].reminderDays!,
                                   // 'Due date: 1 Sep, 2021',
                                   style: TextStyle(

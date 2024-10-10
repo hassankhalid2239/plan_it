@@ -150,8 +150,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       leading: Obx((){
-                        if(_taskController.dueDate.isNotEmpty){
-                          return Text(_taskController.dueDate.value,style: TextStyle(color: Colors.black,fontSize: 14),);
+                        if(_taskController.uiDueDate.isNotEmpty){
+                          return Text(_taskController.uiDueDate.value,style: TextStyle(color: Colors.black,fontSize: 14),);
                         }else if(_taskController.selectedDays.isNotEmpty){
                           String daysString = _taskController.selectedDays.join(',');
                           if(_taskController.selectedDays.length==7){
@@ -171,7 +171,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                             lastDate: DateTime(2100));
                         if (pickedDate != null) {
                           if(pickedDate.isAfter(DateTime.now())){
-                            _taskController.dueDate.value=DateFormat('E, d MMM yyyy').format(pickedDate);
+                            _taskController.uiDueDate.value=DateFormat('E, d MMM yyyy').format(pickedDate);
+                            _taskController.dueDate.value=pickedDate.toString();
                             _taskController.selectedDays.value=[];
                           }else{
                             Get.snackbar('Oh!', 'Please Select upcoming date');
@@ -196,6 +197,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                 return TextButton(
                                     onPressed: (){
                                       _taskController.dueDate.value='';
+                                      _taskController.uiDueDate.value='';
                                       if (_taskController.selectedDays
                                           .contains(days[index])) {
                                         _taskController.selectedDays.remove(
@@ -205,6 +207,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                             days[index]);
                                       }
                                       _taskController.dueDate.value='';
+                                      _taskController.uiDueDate.value='';
                                     },
                                     style: ButtonStyle(
                                       backgroundColor: WidgetStatePropertyAll(_taskController.selectedDays.contains(days[index])?Colors.grey.shade200:Colors.transparent),
@@ -281,8 +284,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     const WidgetStatePropertyAll(Colors.transparent)),
                 onPressed: () {
                   if(titleTextController.text.isNotEmpty){
-                    if(_taskController.selectedDays.isEmpty&&_taskController.dueDate.isEmpty){
-                      _taskController.dueDate.value=DateFormat('E, d MMM yyyy').format(DateTime.now());
+                    if(_taskController.selectedDays.isEmpty&&_taskController.uiDueDate.isEmpty){
+                      _taskController.uiDueDate.value=DateFormat('E, d MMM yyyy').format(DateTime.now());
+                      _taskController.dueDate.value=DateTime.now().toString();
                     }
                     _taskController.addTask(titleTextController.text);
                     Navigator.pop(context);

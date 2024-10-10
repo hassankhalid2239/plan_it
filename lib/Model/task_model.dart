@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class TaskModel {
   int? id;
   String? title;
@@ -7,6 +9,8 @@ class TaskModel {
   String? createdDate;
   String? dueTime;
   String? dueDate;
+  DateTime? untilDate;
+  String? uiDueDate;
 
   TaskModel(
       {this.id, this.title, this.isCompleted, this.until, this.reminderDays, this.createdDate, this.dueTime, this.dueDate,});
@@ -20,6 +24,8 @@ class TaskModel {
     reminderDays = json['reminderDays'];
     createdDate = json['createdDate'];
     until = json['until'];
+    uiDueDate=DateFormat('E, d MMM yyyy').format(DateTime.parse(json['dueDate']));
+    untilDate = DateTime.parse(json['dueDate']);
   }
 
   Map<String, dynamic> toJson() {

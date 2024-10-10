@@ -11,6 +11,7 @@ class TaskController extends GetxController{
   RxInt minute = 0.obs;
   RxString currentDate=''.obs;
   RxString dueDate=''.obs;
+  RxString uiDueDate=''.obs;
   RxString dueTime=''.obs;
   RxString period = 'am'.obs;
   RxInt currentIndex = 0.obs;
@@ -92,6 +93,7 @@ class TaskController extends GetxController{
     List<String> days = task.reminderDays!.split(',');
     splitTimeString(task.dueTime!);
     dueDate.value= task.dueDate!;
+    uiDueDate.value= task.uiDueDate!;
     selectedDays.value = days;
   }
 
