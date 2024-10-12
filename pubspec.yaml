@@ -47,6 +47,7 @@ dependencies:
   carousel_slider:
   awesome_notifications:
   workmanager:
+  fluttertoast:
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:plan_it/db/db_helper.dart';
+import 'package:workmanager/workmanager.dart';
 
 import '../Model/task_model.dart';
 import '../Services/notification_services.dart';
@@ -127,8 +128,22 @@ class TaskController extends GetxController{
     // getCompletedTask();
   }
 
-  void markTaskCompleted(int id, String isCompleted) async {
-    await DbHelper.update(id, isCompleted);
+  void markTaskCompleted(String isCompleted, TaskModel task) async {
+    if(isCompleted=='true'){
+      NotificationService.cancelAlert(task.id!);
+    }else{
+      spreadHourMinute(convertTo24HourFormat(task.dueTime!));
+      int? id = await  DbHelper.fetchTaskIdByDueDate(task.dueDate!);
+      await NotificationService.showScheduleAlert(
+          id: id!,
+          title: "Task Alert",
+          body: task.title!,
+          scheduled: true,
+          date: DateTime.now(),
+          hour: setHour,
+          min: setMint);
+    }
+    await DbHelper.update(task.id!, isCompleted);
     getTasks();
   }
 
@@ -163,7 +178,6 @@ class TaskController extends GetxController{
 
   void setAutoAlert()async{
     var taskList = <TaskModel>[];
-    var reminderTask = <TaskModel>[];
     List<Map<String, dynamic>> tasks = await DbHelper.daysTask();
     taskList.addAll(tasks.map((data) => TaskModel.fromJson(data)).toList());
     for(int i=0; i<taskList.length; i++){
@@ -213,6 +227,14 @@ class TaskController extends GetxController{
       default:
         return 0; // Agar koi valid weekday nahi hai, toh 0 return karega
     }
+  }
+
+
+  startBackgroundTask(){
+    Workmanager().registerPeriodicTask('Task1', 'SetAutoAlert',
+        frequency: const Duration(minutes: 15));
+    print('&&&&& Task Started on Background &&&&&');
+    setAutoAlert();
   }
 
 }

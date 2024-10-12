@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:plan_it/view/update_task_screen.dart';
+import 'package:plan_it/view/utils.dart';
 import 'package:workmanager/workmanager.dart';
 import '../Controllers/task_controller.dart';
 import '../Services/notification_services.dart';
@@ -23,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     super.initState();
     _taskController.getTasks();
-    startBackTask();
+    _taskController.startBackgroundTask();
   }
 
   void getTime(){
@@ -33,11 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
     print(dt);
   }
 
-  startBackTask(){
-    Workmanager().registerPeriodicTask('Task1', 'Backup',
-        frequency: const Duration(minutes: 15));
-    print('&&&&& Task Started on Background &&&&&');
-  }
   @override
   Widget build(BuildContext context) {
     getTime();
@@ -61,6 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
             style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w600),
           ),
         ),
+        actions: [
+          IconButton(onPressed: (){
+            Workmanager().cancelByUniqueName('Task1');
+            Utils().showToastMessage('Background Services stopped successfully');
+          }, icon: Icon(Icons.stop))
+        ],
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(100),
           child: DatePicker(
@@ -194,12 +196,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     onTap: () {
                                       if(_taskController.taskList[index].isCompleted=="true"){
                                         _taskController.markTaskCompleted(
-                                            int.parse(_taskController.taskList[index].id.toString()),
-                                            'false');
+                                            'false',_taskController.taskList[index]);
                                       }else{
                                         _taskController.markTaskCompleted(
-                                            int.parse(_taskController.taskList[index].id.toString()),
-                                            'true');
+                                            'true',_taskController.taskList[index]);
                                       }
                                     },
                                     child:  Obx((){
