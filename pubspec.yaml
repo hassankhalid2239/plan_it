@@ -46,6 +46,7 @@ dependencies:
   numberpicker:
   carousel_slider:
   awesome_notifications:
+  workmanager:
 
 dev_dependencies:
   flutter_test:

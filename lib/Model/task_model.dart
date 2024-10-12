@@ -9,7 +9,7 @@ class TaskModel {
   String? createdDate;
   String? dueTime;
   String? dueDate;
-  DateTime? untilDate;
+  // DateTime? untilDate;
   String? uiDueDate;
 
   TaskModel(
@@ -24,8 +24,8 @@ class TaskModel {
     reminderDays = json['reminderDays'];
     createdDate = json['createdDate'];
     until = json['until'];
-    uiDueDate=DateFormat('E, d MMM yyyy').format(DateTime.parse(json['dueDate']));
-    untilDate = DateTime.parse(json['dueDate']);
+    uiDueDate=json['dueDate']==''?'':DateFormat('E, d MMM yyyy').format(DateTime.parse(json['dueDate']));
+    // untilDate = json['dueDate']==''?DateTime(0):DateTime.parse(json['dueDate']);
   }
 
   Map<String, dynamic> toJson() {

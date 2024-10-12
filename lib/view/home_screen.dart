@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:plan_it/view/update_task_screen.dart';
+import 'package:workmanager/workmanager.dart';
 import '../Controllers/task_controller.dart';
 import '../Services/notification_services.dart';
 import 'add_task_screen.dart';
@@ -22,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     super.initState();
     _taskController.getTasks();
+    startBackTask();
   }
 
   void getTime(){
@@ -30,9 +32,16 @@ class _HomeScreenState extends State<HomeScreen> {
     DateTime dt= DateTime.parse(dateTime);
     print(dt);
   }
+
+  startBackTask(){
+    Workmanager().registerPeriodicTask('Task1', 'Backup',
+        frequency: const Duration(minutes: 15));
+    print('&&&&& Task Started on Background &&&&&');
+  }
   @override
   Widget build(BuildContext context) {
     getTime();
+    // NotificationService.getDays();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -111,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               borderRadius: BorderRadius.circular(8)),
                           // color: Theme.of(context).colorScheme.onSecondary,
                           color: _taskController.taskList[index].isCompleted=='true'
-                              ? Color(0xff989cff)
+                              ? Colors.green
                               : Color(0xff767eff),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(12),
